@@ -1,0 +1,17 @@
+{
+  "home": {
+    "initial": {
+      "nav": {
+        "buttonCreatedAccount": "Create Account",
+        "buttonLogin": "Login"
+      },
+
+      "firstMessage": "Create your portfolio without writing a single line of code",
+      "buttonGetStarted": "Get Started"
+    }
+  },
+
+  "footer": {
+    "text": "All rights reserved"
+  }
+}

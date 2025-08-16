@@ -1,8 +1,11 @@
 import { Header } from "../components/header/header";
 import imgCentralHome from "../assets/img/home-site/image-central.jpg";
 import { Footer } from "../components/footer/footer";
+import { useTranslation } from "react-i18next";
 
 export const HomePage = () => {
+  const { t } = useTranslation();
+
   const headerObject = [
     {
       title: {
@@ -14,7 +17,7 @@ export const HomePage = () => {
       },
       nav: [
         {
-          text: "Criar Conta",
+          text: `${t("home.initial.nav.buttonCreatedAccount")}`,
           path: "/criar-conta",
           style: {
             color: "text-blue-700",
@@ -25,7 +28,7 @@ export const HomePage = () => {
           },
         },
         {
-          text: "Login",
+          text: `${t("home.initial.nav.buttonLogin")}`,
           path: "/login",
           style: {
             color: "text-white",
@@ -36,8 +39,19 @@ export const HomePage = () => {
           },
         },
       ],
+
+      select: [
+        {
+          style: { color: "text-gray-700" },
+          option: [
+            { text: "pt", style: {} },
+            { text: "en", style: {} },
+          ],
+        },
+      ],
       styleHeader:
         "flex justify-between items-center p-4 max-w-full mx-auto bg-gradient-to-r from-blue-50 via-blue-100 to-blue-200 shadow-md",
+      styleNav: "flex gap-4",
     },
   ];
 
@@ -47,15 +61,17 @@ export const HomePage = () => {
         title={headerObject.map((i) => i.title)}
         nav={headerObject.flatMap((i) => i.nav)}
         styleHeader={headerObject[0].styleHeader}
+        styleNav={headerObject[0].styleNav}
+        select={headerObject.flatMap((i) => i.select)}
       />
 
       <main className="flex flex-col md:flex-row bg-white">
         <section className="flex flex-col justify-center md:ml-14 md:mt-14 md:w-1/2 p-4">
           <p className="font-bold text-4xl md:text-5xl">
-            Crie seu portfolio sem precisar escrever UMA linha de CÓDIGO
+            {t("home.initial.firstMessage")}
           </p>
           <button className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer w-max">
-            Começar agora
+            {t("home.initial.buttonGetStarted")}
           </button>
         </section>
 
@@ -68,7 +84,7 @@ export const HomePage = () => {
         </section>
       </main>
 
-      <Footer/>
+      <Footer />
     </>
   );
 };
