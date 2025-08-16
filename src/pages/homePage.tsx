@@ -2,6 +2,7 @@ import { Header } from "../components/header/header";
 import imgCentralHome from "../assets/img/home-site/image-central.jpg";
 import { Footer } from "../components/footer/footer";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -70,9 +71,11 @@ export const HomePage = () => {
           <p className="font-roboto font-bold text-5xl">
             {t("home.initial.firstMessage")}
           </p>
-          <button className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer w-max font-lato">
-            {t("home.initial.buttonGetStarted")}
-          </button>
+          <Link to={"/create"}>
+            <button className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer w-max font-lato">
+              {t("home.initial.buttonGetStarted")}
+            </button>
+          </Link>
         </section>
 
         <section className="hidden md:flex md:w-1/2 justify-center items-center p-4">
