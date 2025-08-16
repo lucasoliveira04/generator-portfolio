@@ -78,7 +78,7 @@ export const HomePage = () => {
         <section className="hidden md:flex md:w-1/2 justify-center items-center p-4">
           <img
             src={imgCentralHome}
-            className="w-full h-[500px] object-cover rounded-xl"
+            className="w-full h-[500px] object-cover rounded-xl hover:scale-105 hover:shadow-lg transition-all duration-300"
             alt="Imagem central"
           />
         </section>
