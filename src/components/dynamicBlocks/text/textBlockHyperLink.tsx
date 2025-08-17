@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import Draggable from "react-draggable";
 import type { TextBlockHyperLinkProps } from "../../../types/textBlockProps";
 
 export const TextBlockHyperLink = ({
@@ -8,18 +9,21 @@ export const TextBlockHyperLink = ({
   className,
   style,
   isSet,
+  draggable = false,
 }: TextBlockHyperLinkProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(content);
   const [link, setLink] = useState(href);
+
+  const nodeRef = useRef<HTMLDivElement>(null);
 
   const handleBlur = () => setIsEditing(false);
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") setIsEditing(false);
   };
 
-  return (
-    <div className={className} style={style}>
+  const contentBlock = (
+    <div ref={nodeRef} className={className} style={style}>
       {isSet && isEditing ? (
         <div className="flex flex-col space-y-1">
           <input
@@ -54,4 +58,6 @@ export const TextBlockHyperLink = ({
       )}
     </div>
   );
+
+  return draggable ? <Draggable nodeRef={nodeRef}>{contentBlock}</Draggable> : contentBlock;
 };

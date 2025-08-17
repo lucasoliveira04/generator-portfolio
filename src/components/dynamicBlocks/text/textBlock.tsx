@@ -6,7 +6,9 @@ export const TextBlock = ({
   style,
   className,
   isSet,
-}: TextBlockProps) => {
+  draggable = false,
+  nodeRef,
+}: TextBlockProps & { draggable?: boolean; nodeRef?: React.RefObject<HTMLDivElement> }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(content);
 
@@ -15,8 +17,12 @@ export const TextBlock = ({
     if (e.key === "Enter") setIsEditing(false);
   };
 
-  return (
-    <div className={`p-4 border-b ${className}`} style={style}>
+  const block = (
+    <div
+      ref={nodeRef}
+      className={`p-4 border-b cursor-move ${className}`}
+      style={style}
+    >
       {isSet && isEditing ? (
         <input
           type="text"
@@ -32,4 +38,6 @@ export const TextBlock = ({
       )}
     </div>
   );
+
+  return draggable ? <>{block}</> : block;
 };
