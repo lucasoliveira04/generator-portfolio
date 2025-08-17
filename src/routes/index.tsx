@@ -1,14 +1,14 @@
-import { HashRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { HomePage } from "../pages/homePage";
-import { HomePageUser } from "../pages/user/homePage";
+import { HomePageUser } from "../pages/user/homePageUser";
 
 export const AppRoutes = () => {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/create" element={<HomePageUser />} />
+        <Route path="/home" element={<HomePageUser />} />
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   );
 };
