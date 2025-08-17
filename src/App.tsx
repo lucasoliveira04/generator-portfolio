@@ -1,13 +1,15 @@
-import './App.css'
-import { AppRoutes } from './routes'
+import "./App.css";
+import { PageConfigProvider } from "./context/paginaConfigContext";
+import { AppRoutes } from "./routes";
 
 function App() {
   return (
     <>
-      <AppRoutes />
+      <PageConfigProvider>
+        <AppRoutes />
+      </PageConfigProvider>
     </>
-  )
+  );
 }
 
-export default App
-
+export default App;

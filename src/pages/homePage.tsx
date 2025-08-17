@@ -2,6 +2,7 @@ import { Header } from "../components/header/header";
 import imgCentralHome from "../assets/img/home-site/image-central.jpg";
 import { Footer } from "../components/footer/footer";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -66,19 +67,21 @@ export const HomePage = () => {
       />
 
       <main className="flex flex-col md:flex-row bg-white">
-        <section className="flex flex-col justify-center md:ml-14 md:mt-14 md:w-1/2 p-4">
-          <p className="font-bold text-4xl md:text-5xl">
+        <section className="flex flex-col justify-center md:ml-14 md:mt-14 md:w-1/2 p-4 mb-15">
+          <p className="font-roboto font-bold text-5xl">
             {t("home.initial.firstMessage")}
           </p>
-          <button className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer w-max">
-            {t("home.initial.buttonGetStarted")}
-          </button>
+          <Link to={"/create"}>
+            <button className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer w-max font-lato">
+              {t("home.initial.buttonGetStarted")}
+            </button>
+          </Link>
         </section>
 
         <section className="hidden md:flex md:w-1/2 justify-center items-center p-4">
           <img
             src={imgCentralHome}
-            className="w-full h-[500px] object-cover rounded-xl"
+            className="w-full h-[500px] object-cover rounded-xl hover:scale-105 hover:shadow-lg transition-all duration-300"
             alt="Imagem central"
           />
         </section>
