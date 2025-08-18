@@ -26,6 +26,7 @@ export const TextBlockHyperLink = ({
               type="text"
               value={link}
               onChange={(e) => setLink(e.target.value)}
+              placeholder="Link aqui"
               className="bg-gray-200 text-black px-1 py-0 outline-none rounded"
             />
           </div>
