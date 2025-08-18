@@ -1,12 +1,11 @@
-export type TextBlockProps = {
+export interface TextBlockProps {
   content: string;
-  style?: React.CSSProperties;
-  className?: string;
   isSet: boolean;
   draggable?: boolean;
-  nodeRef?: React.RefObject<HTMLDivElement>;
-};
-export type TextBlockHyperLinkProps = TextBlockProps & {
+  className?: string;
+}
+
+export interface TextBlockHyperLinkProps extends TextBlockProps {
   href: string;
   target?: "_blank" | "_self";
-};
+}

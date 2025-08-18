@@ -1,10 +1,15 @@
+import { TextBlock } from "../dynamicBlocks/text/TextBlock";
+
 export const FooterPronta = () => {
   return (
     <footer className="w-full bg-gray-900 text-gray-300 py-4 px-6 flex flex-col items-center shadow-inner">
-      <p className="text-sm">
-        © {new Date().getFullYear()} Seu nome aqui. Todos os direitos
-        reservados.
-      </p>
+      <TextBlock
+        content="Desenvolvido por Seu Nome Aqui"
+        className="text-sm text-center mb-2 text-white"
+        isSet={true}
+        draggable={true}
+        style={{ color: "text-gray-400" }}
+      />
       <nav className="mt-2">
         <ul className="flex space-x-6 text-sm">
           <li>
