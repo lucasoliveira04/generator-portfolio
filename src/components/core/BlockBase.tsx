@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import Draggable from "react-draggable";
 import { SideModal } from "../dynamicBlocks/SideModal";
 
-
 interface BlockBaseProps {
   children: (mode: { isEditing: boolean }) => React.ReactNode;
   className?: string;
@@ -63,8 +62,8 @@ export const BlockBase = ({ children, className, style }: BlockBaseProps) => {
       {isMoving ? (
         <Draggable
           nodeRef={blockRef}
-          position={position} 
-          onDrag={(e, data) => setPosition({ x: data.x, y: data.y })} 
+          position={position}
+          onDrag={(_e, data) => setPosition({ x: data.x, y: data.y })}
           onStop={() => setIsMoving(false)}
         >
           {content}
