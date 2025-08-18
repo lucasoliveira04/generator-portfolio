@@ -63,7 +63,7 @@ export const BlockBase = ({ children, className, style }: BlockBaseProps) => {
         <Draggable
           nodeRef={blockRef}
           position={position}
-          onDrag={(e, data) => setPosition({ x: data.x, y: data.y })}
+          onDrag={(_e, data) => setPosition({ x: data.x, y: data.y })}
           onStop={() => setIsMoving(false)}
         >
           {content}
