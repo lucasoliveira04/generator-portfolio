@@ -10,109 +10,134 @@ import { usePageConfig } from "../../context/paginaConfigContext";
 
 export const BarConfigPage = () => {
   const [open, setOpen] = useState(true);
-  const [openButtonGridComponents, setOpenButtonGridComponents] =
-    useState(false);
+  const [openCategory, setOpenCategory] = useState<boolean[]>([false, false]);
   const { addedComponents, addComponent, removeComponent } = usePageConfig();
 
-  const buttonObject = [
+  const componentCategories = [
     {
-      text: "Adicionar Cabeçalho",
-      action: () => addComponent("cabecalho"),
+      title: "Componentes Prontos",
+      components: ["Cabeçalho", "Main", "Rodapé"],
     },
     {
-      text: "Adicionar Rodapé",
-      action: () => addComponent("rodape"),
+      title: "Componentes Customizáveis",
+      components: ["Caixa Livre", "Texto", "Carrossel de Imagens"],
     },
   ];
 
-  const toggleGridComponents = () => {
-    setOpenButtonGridComponents(!openButtonGridComponents);
+  const toggleCategory = (index: number) => {
+    const newState = [...openCategory];
+    newState[index] = !newState[index];
+    setOpenCategory(newState);
+  };
+
+  const handleSave = () => {
+    console.log("Componentes salvos:", addedComponents);
+    alert("Configurações salvas!");
   };
 
   return (
-    <div className="flex h-screen">
-      <div
-        className={`${
-          open ? "w-64" : "w-16"
-        } bg-gray-800 text-white p-4 flex flex-col transition-all duration-500 ease-in-out`}
+    <div
+      className={`
+        ${open ? "w-48" : "w-12"} 
+        bg-gray-800 text-white p-3 flex flex-col transition-all duration-500 ease-in-out
+      `}
+    >
+      {/* Botão abrir/fechar barra */}
+      <button
+        className="mb-4 self-end p-1 rounded hover:bg-gray-700 transition-colors"
+        onClick={() => setOpen(!open)}
       >
-        {/* Botão para abrir/fechar barra */}
-        <button
-          className="mb-4 self-end p-1 rounded hover:bg-gray-700 transition-colors"
-          onClick={() => setOpen(!open)}
-        >
-          {open ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
-        </button>
+        {open ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
+      </button>
 
-        {open && (
-          <h1 className="text-lg font-bold mb-4 animate-fadeIn">
+      {open && (
+        <>
+          <h1 className="text-sm font-bold mb-3 animate-fadeIn">
             Configurações
           </h1>
-        )}
 
-        {/* Sessão de botões de componentes */}
-        <div className="border-l-2 pl-2 transition-all duration-500 ease-in-out">
-          <p
-            onClick={toggleGridComponents}
-            className="cursor-pointer flex items-center mb-2 transition-all duration-300 ease-in-out hover:text-blue-400 text-[14px]"
-          >
-            Componentes gráficos prontos
-            {openButtonGridComponents ? <ArrowBigUp /> : <ArrowBigDown />}
-          </p>
-
-          <div
-            className={`overflow-hidden transition-all duration-500 ease-in-out ${
-              openButtonGridComponents
-                ? "max-h-40 opacity-100"
-                : "max-h-0 opacity-0"
-            }`}
-          >
-            <div className="flex flex-col space-y-2">
-              {buttonObject.map((button, index) => {
-                const componentType = button.text.includes("Cabeçalho")
-                  ? "cabecalho"
-                  : "rodape";
-                const isAdded = addedComponents.includes(componentType);
-
-                return (
-                  <button
-                    key={index}
-                    onClick={() => addComponent(componentType)}
-                    className={`cursor-pointer text-left transition-all duration-300 ${
-                      isAdded
-                        ? "text-gray-500 cursor-not-allowed"
-                        : "text-gray-300 hover:text-white hover:border-blue-500"
-                    }`}
-                    disabled={isAdded}
-                  >
-                    {open ? button.text : "+"}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* Lista de componentes adicionados no final */}
-        <div className="mt-auto">
-          <ul className="mt-2 space-y-2">
-            {addedComponents.map((comp, i) => (
-              <li
-                key={i}
-                className="relative bg-gray-700 text-white text-sm py-2 px-3 rounded shadow-md transition-all duration-300 hover:bg-gray-600"
-              >
-                {open ? <span>{comp}</span> : comp[0].toUpperCase()}
-                <button
-                  onClick={() => removeComponent(comp)}
-                  className="absolute top-1 right-1 p-1 rounded-full hover:bg-red-600 transition-colors"
+          <div className="flex-1 overflow-y-auto pr-1">
+            {componentCategories.map((category, i) => (
+              <div key={i} className="mb-3">
+                <p
+                  onClick={() => toggleCategory(i)}
+                  className="cursor-pointer flex items-center justify-between text-xs font-medium mb-1 hover:text-blue-400 transition-colors"
                 >
-                  <X size={14} />
-                </button>
-              </li>
+                  {category.title}{" "}
+                  {openCategory[i] ? (
+                    <ArrowBigUp size={14} />
+                  ) : (
+                    <ArrowBigDown size={14} />
+                  )}
+                </p>
+
+                <div
+                  className={`overflow-hidden transition-all duration-300 ${
+                    openCategory[i]
+                      ? "max-h-80 opacity-100"
+                      : "max-h-0 opacity-0"
+                  }`}
+                >
+                  <div className="grid grid-cols-2 gap-1">
+                    {category.components.map((comp, j) => {
+                      const isAdded = addedComponents.includes(
+                        comp.toLowerCase()
+                      );
+                      return (
+                        <button
+                          key={j}
+                          onClick={() => addComponent(comp.toLowerCase())}
+                          disabled={isAdded}
+                          className={`
+                            flex items-center justify-center p-1 rounded transition-colors
+                            text-[10px]
+                            ${
+                              isAdded
+                                ? "bg-gray-700 text-gray-500 cursor-not-allowed"
+                                : "bg-gray-600 hover:bg-gray-500"
+                            }
+                          `}
+                        >
+                          {comp}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
             ))}
-          </ul>
-        </div>
-      </div>
+          </div>
+
+          <div className="mt-3">
+            <h2 className="text-xs font-semibold mb-1">
+              Componentes adicionados
+            </h2>
+            <ul className="space-y-1">
+              {addedComponents.map((comp, i) => (
+                <li
+                  key={i}
+                  className="relative bg-gray-700 text-white text-xs py-1 px-2 rounded shadow-md transition-all duration-300 hover:bg-gray-600"
+                >
+                  <span>{comp}</span>
+                  <button
+                    onClick={() => removeComponent(comp)}
+                    className="absolute top-0.5 right-0.5 p-1 rounded-full hover:bg-red-600 transition-colors"
+                  >
+                    <X size={12} />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <button
+            onClick={handleSave}
+            className="mt-3 w-full bg-blue-600 hover:bg-blue-500 text-white py-1.5 rounded transition-colors text-xs"
+          >
+            Salvar
+          </button>
+        </>
+      )}
     </div>
   );
 };
