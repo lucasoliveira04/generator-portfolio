@@ -1,5 +1,5 @@
 import { BarConfigPage } from "../../components/pagina-dinamica/barConfigPage";
-import { PaginaDinamica } from "../../components/pagina-dinamica/page";
+import { PaginaDinamica } from "../../components/pagina-dinamica/paginaDinamica";
 
 export const HomePageUser = () => {
   return (
