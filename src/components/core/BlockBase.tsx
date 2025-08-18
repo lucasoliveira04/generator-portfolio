@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import Draggable from "react-draggable";
-import { SideModal } from "../dynamicBlocks/sideModal";
+import { SideModal } from "../dynamicBlocks/SideModal";
+
 
 interface BlockBaseProps {
   children: (mode: { isEditing: boolean }) => React.ReactNode;
