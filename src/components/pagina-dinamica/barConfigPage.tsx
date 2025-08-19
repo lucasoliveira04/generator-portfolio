@@ -7,11 +7,13 @@ import {
   X,
 } from "lucide-react";
 import { usePageConfig } from "../../context/paginaConfigContext";
+import { useAutoSaveContext } from "../../context/AutoSaveContext";
 
 export const BarConfigPage = () => {
   const [open, setOpen] = useState(true);
   const [openCategory, setOpenCategory] = useState<boolean[]>([false, false]);
   const { addedComponents, addComponent, removeComponent } = usePageConfig();
+  const { apagarItem } = useAutoSaveContext<Record<string, unknown>>();
 
   const componentCategories = [
     {
@@ -119,7 +121,11 @@ export const BarConfigPage = () => {
                 >
                   <span>{comp}</span>
                   <button
-                    onClick={() => removeComponent(comp)}
+                    onClick={() => {
+                      removeComponent(comp);
+                      apagarItem(comp);
+                      console.log("Componente removido:", comp);
+                    }}
                     className="absolute top-0.5 right-0.5 p-1 rounded-full hover:bg-red-600 transition-colors"
                   >
                     <X size={12} />
