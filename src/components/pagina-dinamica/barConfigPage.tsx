@@ -16,11 +16,11 @@ export const BarConfigPage = () => {
   const componentCategories = [
     {
       title: "Componentes Prontos",
-      components: ["Cabeçalho", "Main", "Rodapé"],
+      components: ["cabecalho", "main", "rodape"],
     },
     {
       title: "Componentes Customizáveis",
-      components: ["Caixa Livre", "Texto", "Carrossel de Imagens"],
+      components: ["caixa livre", "texto", "carrossel de imagens"],
     },
   ];
 
@@ -31,7 +31,7 @@ export const BarConfigPage = () => {
   };
 
   const handleSave = () => {
-    console.log("Componentes salvos:", addedComponents);
+    localStorage.setItem("addedComponents", JSON.stringify(addedComponents));
     alert("Configurações salvas!");
   };
 
@@ -42,7 +42,6 @@ export const BarConfigPage = () => {
         bg-gray-800 text-white p-3 flex flex-col transition-all duration-500 ease-in-out
       `}
     >
-      {/* Botão abrir/fechar barra */}
       <button
         className="mb-4 self-end p-1 rounded hover:bg-gray-700 transition-colors"
         onClick={() => setOpen(!open)}
