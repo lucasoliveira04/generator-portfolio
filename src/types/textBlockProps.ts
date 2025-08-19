@@ -7,6 +7,7 @@ export interface TextBlockProps {
 
 export interface TextBlockHyperLinkProps extends TextBlockProps {
   href: string;
+  onChange?: (text: string, href: string) => void;
   target?: "_blank" | "_self";
 }
 
