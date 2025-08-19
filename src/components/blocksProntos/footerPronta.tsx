@@ -1,8 +1,11 @@
+import { AutoSaveBlock } from "../dynamicBlocks/AutoSaveBlock";
 import { TextBlock } from "../dynamicBlocks/text/textBlock";
 import { TextBlockHyperLink } from "../dynamicBlocks/text/textBlockHyperLink";
 
 export const FooterPronta = () => {
-  const navLinks = [
+  const defaultTitle = "Desenvolvido por Seu Nome Aqui";
+
+  const navLinksDefaults = [
     { href: `${window.location.href}/privacidade`, label: "Privacidade" },
     { href: `${window.location.href}/termos`, label: "Termos" },
     { href: `${window.location.href}/contato`, label: "Contato" },
@@ -10,22 +13,36 @@ export const FooterPronta = () => {
 
   return (
     <footer className="w-full bg-gray-900 text-gray-300 py-4 px-6 flex flex-col items-center shadow-inner">
-      <TextBlock
-        content="Desenvolvido por Seu Nome Aqui"
-        className="text-sm text-center mb-2 text-white"
-        isSet={true}
-        draggable={true}
-      />
+      <AutoSaveBlock storageKey="footerTitle" defaultValue={defaultTitle}>
+        {(title, setTitle) => (
+          <TextBlock
+            content={title}
+            className="text-sm text-center mb-2 text-white"
+            isSet={true}
+            draggable={true}
+            onChange={setTitle}
+          />
+        )}
+      </AutoSaveBlock>
+
       <nav className="mt-2">
         <ul className="flex space-x-6 text-sm">
-          {navLinks.map((link) => (
+          {navLinksDefaults.map((link) => (
             <li key={link.href}>
-              <TextBlockHyperLink
-                href={link.href}
-                content={link.label}
-                isSet={true}
-                draggable
-              />
+              <AutoSaveBlock
+                storageKey={`footerNavItem-${link.label}`}
+                defaultValue={link}
+              >
+                {(navItem, setNavItem) => (
+                  <TextBlockHyperLink
+                    href={navItem.href}
+                    content={navItem.label}
+                    isSet={true}
+                    draggable
+                    onChange={(label, href) => setNavItem({ label, href })}
+                  />
+                )}
+              </AutoSaveBlock>
             </li>
           ))}
         </ul>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { AutoSaveBlock } from "../dynamicBlocks/AutoSaveBlock";
 import { TextBlock } from "../dynamicBlocks/text/textBlock";
 import { TextBlockHyperLink } from "../dynamicBlocks/text/textBlockHyperLink";
 
@@ -10,48 +10,32 @@ export const HeaderPronta = () => {
     { href: "#contato", label: "Contato" },
   ];
 
-  const [title, setTitle] = useState(() => {
-    const saved = localStorage.getItem("headerData");
-    if (saved) return JSON.parse(saved).title || defaultTitle;
-    return defaultTitle;
-  });
-
-  const [navItems, setNavItems] = useState(() => {
-    const saved = localStorage.getItem("headerData");
-    if (saved)
-      return JSON.parse(saved).navItems?.length
-        ? JSON.parse(saved).navItems
-        : defaultNavItems;
-    return defaultNavItems;
-  });
-
-  const updateNavItem = (index: number, label: string, href: string) => {
-    setNavItems((prev) => {
-      const copy = [...prev];
-      copy[index] = { label, href };
-      return copy;
-    });
-  };
-
-  useEffect(() => {
-    localStorage.setItem("headerData", JSON.stringify({ title, navItems }));
-  }, [title, navItems]);
-
   return (
-    <header className="relative w-full bg-gray-800 text-white px-6 py-4 flex justify-between items-center shadow-md">
-      <TextBlock content={title} isSet={true} draggable onChange={setTitle} />
+    <header className="w-full bg-gray-800 text-white px-6 py-4 flex justify-between items-center shadow-md">
+      <AutoSaveBlock storageKey="headerTitle" defaultValue={defaultTitle}>
+        {(title, setTitle) => (
+          <TextBlock content={title} isSet draggable onChange={setTitle} />
+        )}
+      </AutoSaveBlock>
 
       <nav>
         <ul className="flex space-x-6">
-          {navItems.map((item, index) => (
+          {defaultNavItems.map((item, index) => (
             <li key={item.href + index}>
-              <TextBlockHyperLink
-                content={item.label}
-                href={item.href}
-                isSet={true}
-                draggable
-                onChange={(label, href) => updateNavItem(index, label, href)}
-              />
+              <AutoSaveBlock
+                storageKey={`headerNavItem-${index}`}
+                defaultValue={item}
+              >
+                {(navItem, setNavItem) => (
+                  <TextBlockHyperLink
+                    content={navItem.label}
+                    href={navItem.href}
+                    isSet
+                    draggable
+                    onChange={(label, href) => setNavItem({ label, href })}
+                  />
+                )}
+              </AutoSaveBlock>
             </li>
           ))}
         </ul>
