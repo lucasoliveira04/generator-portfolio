@@ -1,42 +1,52 @@
 import type { JSX } from "react";
 import { usePageConfig } from "../../context/paginaConfigContext";
-import { MainBlock } from "../dynamicBlocks/main";
 import { SectionBlock } from "../dynamicBlocks/section";
 import { HeaderPronta } from "../blocksProntos/headerFeita";
 import { FooterPronta } from "../blocksProntos/footerPronta";
+import { MainPronta } from "../blocksProntos/mainPronta";
+import { Resizable } from "re-resizable";
 
 export const PaginaDinamica = () => {
-  const { addedComponents, listAllComponentes } = usePageConfig();
+  const { addedComponents } = usePageConfig();
 
   const renderComponent = (type: string) => {
     const componentMap: Record<string, JSX.Element> = {
       cabecalho: <HeaderPronta />,
-      main: <MainBlock />,
+      main: <MainPronta />,
       section: <SectionBlock />,
       rodape: <FooterPronta />,
     };
     return componentMap[type];
   };
 
-  console.log(listAllComponentes());
-
   return (
     <div className="flex flex-col min-h-screen w-full">
-      <div className="flex-1">
-        {addedComponents
-          .filter((comp) => comp !== "rodape")
-          .map((comp, i) => (
-            <div key={i}>{renderComponent(comp)}</div>
-          ))}
+      {/* Cabeçalho e seções ficam no topo */}
+      {addedComponents.includes("cabecalho") && (
+        <Resizable
+          defaultSize={{ width: "100%", height: "auto" }}
+          className="w-full overflow-hidden block "
+        >
+          {renderComponent("cabecalho")}
+        </Resizable>
+      )}
 
-        {addedComponents.length === 0 && (
-          <p className="text-gray-500 text-center mt-10 text-2xl font-bold">
-            Crie sua página
-          </p>
-        )}
-      </div>
+      {/* Main centralizado */}
+      {addedComponents.includes("main") && (
+        <div className="flex-1 w-full flex items-center justify-center">
+          {renderComponent("main")}
+        </div>
+      )}
 
-      {addedComponents.includes("rodape") && <FooterPronta />}
+      {/* Rodapé no final */}
+      {addedComponents.includes("rodape") && (
+        <Resizable
+          defaultSize={{ width: "100%", height: "auto" }}
+          className="w-full overflow-hidden block"
+        >
+          <div className="w-full">{renderComponent("rodape")}</div>
+        </Resizable>
+      )}
     </div>
   );
 };
