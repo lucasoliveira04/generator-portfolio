@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowBigDown,
   ArrowBigUp,
@@ -26,15 +26,30 @@ export const BarConfigPage = () => {
     },
   ];
 
+  useEffect(() => {
+    const saved = localStorage.getItem("addedComponents");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved) as string[];
+        parsed.forEach((comp) => {
+          if (!addedComponents.includes(comp)) {
+            addComponent(comp);
+          }
+        });
+      } catch (err) {
+        console.error("Erro ao carregar componentes salvos:", err);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("addedComponents", JSON.stringify(addedComponents));
+  }, [addedComponents]);
+
   const toggleCategory = (index: number) => {
     const newState = [...openCategory];
     newState[index] = !newState[index];
     setOpenCategory(newState);
-  };
-
-  const handleSave = () => {
-    localStorage.setItem("addedComponents", JSON.stringify(addedComponents));
-    alert("Configurações salvas!");
   };
 
   return (
@@ -81,13 +96,12 @@ export const BarConfigPage = () => {
                 >
                   <div className="grid grid-cols-2 gap-1">
                     {category.components.map((comp, j) => {
-                      const isAdded = addedComponents.includes(
-                        comp.toLowerCase()
-                      );
+                      const compName = comp.toLowerCase();
+                      const isAdded = addedComponents.includes(compName);
                       return (
                         <button
                           key={j}
-                          onClick={() => addComponent(comp.toLowerCase())}
+                          onClick={() => addComponent(compName)}
                           disabled={isAdded}
                           className={`
                             flex items-center justify-center p-1 rounded transition-colors
@@ -124,7 +138,6 @@ export const BarConfigPage = () => {
                     onClick={() => {
                       removeComponent(comp);
                       apagarItem(comp);
-                      console.log("Componente removido:", comp);
                     }}
                     className="absolute top-0.5 right-0.5 p-1 rounded-full hover:bg-red-600 transition-colors"
                   >
@@ -134,13 +147,6 @@ export const BarConfigPage = () => {
               ))}
             </ul>
           </div>
-
-          <button
-            onClick={handleSave}
-            className="mt-3 w-full bg-blue-600 hover:bg-blue-500 text-white py-1.5 rounded transition-colors text-xs"
-          >
-            Salvar
-          </button>
         </>
       )}
     </div>
