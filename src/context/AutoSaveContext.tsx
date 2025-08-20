@@ -12,7 +12,8 @@ type AutoSaveContextType<T> = {
   salvar: (key: string, value: any) => void;
   apagarItem: (key: string) => void;
   apagarTudo: () => void;
-  listarComponentes: () => string[];
+  carregarComponentes: () => any[];
+  carregarComponenteExpecifico: (tipo: string) => any[];
 };
 
 const AutoSaveContext = createContext<AutoSaveContextType<any> | undefined>(
@@ -28,12 +29,19 @@ export function AutoSaveProvider<T>({
   defaultValue: T;
   children: ReactNode;
 }) {
+  const prefixMap: Record<string, string> = {
+    cabecalho: "header",
+    rodape: "footer",
+    main: "main",
+  };
+
   const [state, setState] = useState<T>(() => {
     const saved = localStorage.getItem(storageKey);
     if (!saved) return defaultValue;
 
     try {
       return JSON.parse(saved);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       console.warn(`Valor inválido no localStorage[${storageKey}]`, saved);
       return defaultValue;
@@ -52,12 +60,6 @@ export function AutoSaveProvider<T>({
   };
 
   const apagarItem = (key: string) => {
-    const prefixMap: Record<string, string> = {
-      cabecalho: "header",
-      rodape: "footer",
-      main: "main",
-    };
-
     const prefix = prefixMap[key.toLowerCase()];
     if (!prefix) return;
 
@@ -73,9 +75,47 @@ export function AutoSaveProvider<T>({
     localStorage.removeItem(storageKey);
   };
 
+  const carregarComponentes = () => {
+    const componentes: string[] = [];
+
+    Object.keys(localStorage).forEach((key) => {
+      for (const [tipo, prefix] of Object.entries(prefixMap)) {
+        if (key.toLowerCase().startsWith(prefix)) {
+          if (!componentes.includes(tipo)) {
+            componentes.push(tipo);
+          }
+        }
+      }
+    });
+
+    return componentes;
+  };
+
+  const carregarComponenteExpecifico = (tipo: string) => {
+    const prefix = prefixMap[tipo.toLowerCase()];
+    if (!prefix) return [];
+
+    const componentes: string[] = [];
+
+    Object.keys(localStorage).forEach((key) => {
+      if (key.toLowerCase().startsWith(prefix)) {
+        componentes.push(key);
+      }
+    });
+
+    return componentes;
+  };
+
   return (
     <AutoSaveContext.Provider
-      value={{ state, salvar, apagarItem, apagarTudo, listarComponentes }}
+      value={{
+        state,
+        salvar,
+        apagarItem,
+        apagarTudo,
+        carregarComponentes,
+        carregarComponenteExpecifico,
+      }}
     >
       {children}
     </AutoSaveContext.Provider>
