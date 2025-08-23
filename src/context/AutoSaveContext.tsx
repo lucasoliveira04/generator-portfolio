@@ -41,7 +41,7 @@ export function AutoSaveProvider<T>({
 
     try {
       return JSON.parse(saved);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       console.warn(`Valor inválido no localStorage[${storageKey}]`, saved);
       return defaultValue;
