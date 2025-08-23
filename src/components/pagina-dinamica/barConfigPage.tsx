@@ -9,40 +9,57 @@ import {
 import { usePageConfig } from "../../context/paginaConfigContext";
 import { useAutoSaveContext } from "../../context/AutoSaveContext";
 import { usePageService } from "../../service/PageService";
+import { useTranslation } from "react-i18next";
+interface ComponentItem {
+  name: string;
+  type: string;
+}
 
 export const BarConfigPage = () => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(true);
   const [openCategory, setOpenCategory] = useState<boolean[]>([false, false]);
   const { addedComponents, addComponent, removeComponent } = usePageConfig();
   const { apagarItem } = useAutoSaveContext<Record<string, unknown>>();
   const { savePage, pageLoad } = usePageService();
 
-  const componentCategories = [
-    {
-      title: "Componentes Prontos",
-      components: ["cabecalho", "main", "rodape"],
-    },
-    {
-      title: "Componentes Customizáveis",
-      components: ["caixa livre", "texto", "carrossel de imagens"],
-    },
-  ];
+  const componentCategories: { title: string; components: ComponentItem[] }[] =
+    [
+      {
+        title: t("componentes.titleComponentReady"),
+        components: [
+          { name: t("componentes.header"), type: "cabecalho" },
+          { name: t("componentes.main"), type: "main" },
+          { name: t("componentes.footer"), type: "rodape" },
+        ],
+      },
+      {
+        title: t("componentes.titleComponentFree"),
+        components: [
+          { name: t("componentes.freeBox"), type: "caixa livre" },
+          { name: t("componentes.text"), type: "texto" },
+          { name: t("componentes.carousel"), type: "carrossel de imagens" },
+        ],
+      },
+    ];
 
   const componentAcoes = [
     {
-      label: "Salvar",
+      label: t("button.save"),
       onClick: () => savePage(localStorage),
-      className: "bg-blue-500 text-white p-2 rounded",
+      className:
+        "w-full bg-blue-600 cursor-pointer hover:bg-blue-500 text-white text-sm font-medium mb-2 rounded-lg shadow-md transition-all duration-300 flex items-center justify-center gap-2",
     },
     {
-      label: "Carregar pagina",
+      label: t("button.load"),
       onClick: async () => {
         const components = await pageLoad();
         components.forEach((comp) => {
           if (!addedComponents.includes(comp)) addComponent(comp);
         });
       },
-      className: "bg-blue-500 text-white p-2 rounded",
+      className:
+        "w-full bg-green-600 cursor-pointer hover:bg-green-500 text-white text-[12px] font-medium mb-2 rounded-lg shadow-md transition-all duration-300 flex items-center justify-center gap-2",
     },
   ];
 
@@ -93,7 +110,7 @@ export const BarConfigPage = () => {
       {open && (
         <>
           <h1 className="text-sm font-bold mb-3 animate-fadeIn">
-            Configurações
+            {t("componentes.titleComponentGraph")}
           </h1>
           <div className="flex-1 overflow-y-auto pr-1">
             {componentCategories.map((category, i) => (
@@ -118,12 +135,12 @@ export const BarConfigPage = () => {
                 >
                   <div className="grid grid-cols-2 gap-1">
                     {category.components.map((comp, j) => {
-                      const compName = comp.toLowerCase();
-                      const isAdded = addedComponents.includes(compName);
+                      const compType = comp.type.toLowerCase();
+                      const isAdded = addedComponents.includes(compType);
                       return (
                         <button
                           key={j}
-                          onClick={() => addComponent(compName)}
+                          onClick={() => addComponent(compType)}
                           disabled={isAdded}
                           className={`flex items-center justify-center p-1 rounded transition-colors text-[10px] ${
                             isAdded
@@ -131,7 +148,7 @@ export const BarConfigPage = () => {
                               : "bg-gray-600 hover:bg-gray-500"
                           }`}
                         >
-                          {comp}
+                          {comp.name}
                         </button>
                       );
                     })}
@@ -141,9 +158,10 @@ export const BarConfigPage = () => {
             ))}
           </div>
 
+          {/* Lista de componentes adicionados */}
           <div className="mt-3">
             <h2 className="text-xs font-semibold mb-1">
-              Componentes adicionados
+              {t("componentes.titleComponentAdd")}
             </h2>
             <ul className="space-y-1">
               {addedComponents.map((comp, i) => (

@@ -13,5 +13,23 @@
 
   "footer": {
     "text": "All rights reserved"
+  },
+
+  "button": {
+    "save": "Save",
+    "load": "Load Ready Page"
+  },
+
+  "componentes": {
+    "titleComponentGraph": "Graphical Components",
+    "titleComponentFree": "Customizable Components",
+    "titleComponentReady": "Ready Components",
+    "titleComponentAdd": "Additional Components",
+    "header": "Header",
+    "main": "Main Content",
+    "footer": "Footer",
+    "freeBox": "Free Box",
+    "text": "Text",
+    "carousel": "Image Carousel"
   }
 }

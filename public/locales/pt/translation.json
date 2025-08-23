@@ -13,5 +13,23 @@
 
   "footer": {
     "text": "Todos os direitos reservados"
+  },
+
+  "button": {
+    "save": "Salvar",
+    "load": "Carregar página pronta"
+  },
+
+  "componentes": {
+    "titleComponentGraph": "Componentes Gráficos",
+    "titleComponentFree": "Componentes Customizáveis",
+    "titleComponentReady": "Componentes Prontos",
+    "titleComponentAdd": "Componentes Adicionais",
+    "header": "Cabeçalho",
+    "main": "Conteúdo Principal",
+    "footer": "Rodapé",
+    "freeBox": "Caixa Livre",
+    "text": "Texto",
+    "carousel": "Carrossel de Imagens"
   }
 }
