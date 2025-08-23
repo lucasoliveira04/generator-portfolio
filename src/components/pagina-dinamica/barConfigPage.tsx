@@ -8,12 +8,14 @@ import {
 } from "lucide-react";
 import { usePageConfig } from "../../context/paginaConfigContext";
 import { useAutoSaveContext } from "../../context/AutoSaveContext";
+import { usePageService } from "../../service/PageService";
 
 export const BarConfigPage = () => {
   const [open, setOpen] = useState(true);
   const [openCategory, setOpenCategory] = useState<boolean[]>([false, false]);
   const { addedComponents, addComponent, removeComponent } = usePageConfig();
   const { apagarItem } = useAutoSaveContext<Record<string, unknown>>();
+  const { savePage, pageLoad } = usePageService();
 
   const componentCategories = [
     {
@@ -26,15 +28,31 @@ export const BarConfigPage = () => {
     },
   ];
 
+  const componentAcoes = [
+    {
+      label: "Salvar",
+      onClick: () => savePage(localStorage),
+      className: "bg-blue-500 text-white p-2 rounded",
+    },
+    {
+      label: "Carregar pagina",
+      onClick: async () => {
+        const components = await pageLoad();
+        components.forEach((comp) => {
+          if (!addedComponents.includes(comp)) addComponent(comp);
+        });
+      },
+      className: "bg-blue-500 text-white p-2 rounded",
+    },
+  ];
+
   useEffect(() => {
     const saved = localStorage.getItem("addedComponents");
     if (saved) {
       try {
         const parsed = JSON.parse(saved) as string[];
         parsed.forEach((comp) => {
-          if (!addedComponents.includes(comp)) {
-            addComponent(comp);
-          }
+          if (!addedComponents.includes(comp)) addComponent(comp);
         });
       } catch (err) {
         console.error("Erro ao carregar componentes salvos:", err);
@@ -54,10 +72,9 @@ export const BarConfigPage = () => {
 
   return (
     <div
-      className={`
-        ${open ? "w-48" : "w-12"} 
-        bg-gray-800 text-white p-3 flex flex-col transition-all duration-500 ease-in-out
-      `}
+      className={`${
+        open ? "w-48" : "w-12"
+      } bg-gray-800 text-white p-3 flex flex-col transition-all duration-500 ease-in-out`}
     >
       <button
         className="mb-4 self-end p-1 rounded hover:bg-gray-700 transition-colors"
@@ -66,12 +83,18 @@ export const BarConfigPage = () => {
         {open ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
       </button>
 
+      {open &&
+        componentAcoes.map((acao, i) => (
+          <button key={i} onClick={acao.onClick} className={acao.className}>
+            {acao.label}
+          </button>
+        ))}
+
       {open && (
         <>
           <h1 className="text-sm font-bold mb-3 animate-fadeIn">
             Configurações
           </h1>
-
           <div className="flex-1 overflow-y-auto pr-1">
             {componentCategories.map((category, i) => (
               <div key={i} className="mb-3">
@@ -86,7 +109,6 @@ export const BarConfigPage = () => {
                     <ArrowBigDown size={14} />
                   )}
                 </p>
-
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
                     openCategory[i]
@@ -103,15 +125,11 @@ export const BarConfigPage = () => {
                           key={j}
                           onClick={() => addComponent(compName)}
                           disabled={isAdded}
-                          className={`
-                            flex items-center justify-center p-1 rounded transition-colors
-                            text-[10px]
-                            ${
-                              isAdded
-                                ? "bg-gray-700 text-gray-500 cursor-not-allowed"
-                                : "bg-gray-600 hover:bg-gray-500"
-                            }
-                          `}
+                          className={`flex items-center justify-center p-1 rounded transition-colors text-[10px] ${
+                            isAdded
+                              ? "bg-gray-700 text-gray-500 cursor-not-allowed"
+                              : "bg-gray-600 hover:bg-gray-500"
+                          }`}
                         >
                           {comp}
                         </button>
