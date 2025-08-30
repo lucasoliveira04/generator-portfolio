@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   ArrowBigDown,
   ArrowBigUp,
@@ -10,6 +10,7 @@ import { usePageConfig } from "../../context/paginaConfigContext";
 import { useAutoSaveContext } from "../../context/AutoSaveContext";
 import { usePageService } from "../../service/PageService";
 import { useTranslation } from "react-i18next";
+import { usePersistedComponents } from "../../hook/usePersistedComponents";
 interface ComponentItem {
   name: string;
   type: string;
@@ -63,23 +64,7 @@ export const BarConfigPage = () => {
     },
   ];
 
-  useEffect(() => {
-    const saved = localStorage.getItem("addedComponents");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved) as string[];
-        parsed.forEach((comp) => {
-          if (!addedComponents.includes(comp)) addComponent(comp);
-        });
-      } catch (err) {
-        console.error("Erro ao carregar componentes salvos:", err);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("addedComponents", JSON.stringify(addedComponents));
-  }, [addedComponents]);
+  usePersistedComponents(addedComponents, addComponent);
 
   const toggleCategory = (index: number) => {
     const newState = [...openCategory];
