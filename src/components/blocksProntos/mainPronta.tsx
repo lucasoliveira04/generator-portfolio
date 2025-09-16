@@ -35,7 +35,7 @@ export const MainPronta = () => {
     {
       type: "TextBlockHyperLink",
       storageKey: "main-link",
-      defaultValue: { label: "Seu link aqui", href: "https://www.seulink.com" },
+      defaultValue: { label: "Seu link aqui", href: "#" },
       props: { className: "text-black hover:underline" },
     },
     {
