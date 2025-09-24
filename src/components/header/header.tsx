@@ -1,17 +1,13 @@
-import { useTranslation } from "react-i18next";
 import type { HeaderProps } from "../../types/header/headerProps";
 import i18n from "../../i18n";
 
 export const Header = ({
   title,
   nav,
-  logo,
   styleHeader,
   styleNav,
   select,
 }: HeaderProps) => {
-  const { t } = useTranslation();
-
   const handleChangeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };

@@ -1,7 +1,7 @@
 export class Grid {
-  private column: string;
-  private row: string;
-  private data: unknown;
+  column: string;
+  row: string;
+  data: unknown;
 
   constructor(column: string, row: string, data: unknown) {
     this.column = column;

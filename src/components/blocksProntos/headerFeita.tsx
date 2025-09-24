@@ -26,13 +26,13 @@ export const HeaderPronta = () => {
                 storageKey={`headerNavItem-${index}`}
                 defaultValue={item}
               >
-                {(navItem, setNavItem) => (
+                {(navItem: { label: string; href: string }, setNavItem) => (
                   <TextBlockHyperLink
                     content={navItem.label}
                     href={navItem.href}
                     isSet
                     draggable
-                    onChange={(label, href) => setNavItem({ label, href })}
+                    onChange={(text: unknown, href: string) => setNavItem({ label: text as string, href })}
                   />
                 )}
               </AutoSaveBlock>

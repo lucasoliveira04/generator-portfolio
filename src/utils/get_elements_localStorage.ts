@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type LocalStorageItems = { [key: string]: Record<string, any> };
 
-export const getElementsLocalStorage = (elements: string[]) => {
+export const getElementsLocalStorage = (
+  elements: string[]
+): string[] | null | any => {
   const items: LocalStorageItems = {};
   const elementsSearchLocalStorage = elements;
 

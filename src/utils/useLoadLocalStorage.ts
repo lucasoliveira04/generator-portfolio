@@ -7,14 +7,12 @@ export const useLoadLocalStorage = () => {
 
   useEffect(() => {
     const elementsSearchLocalStorage = ["footer", "header", "main"];
-    const items = getElementsLocalStorage(elementsSearchLocalStorage);
-    console.log(items);
+    const items: string | null = getElementsLocalStorage(elementsSearchLocalStorage);
 
     if (items) {
       try {
         const parsed = JSON.parse(items) as string[];
 
-        // adiciona cada componente ao estado se ainda não estiver
         parsed.forEach((comp) => {
           if (!addedComponents.includes(comp)) {
             addComponent(comp);
@@ -24,5 +22,5 @@ export const useLoadLocalStorage = () => {
         console.error("Erro ao carregar componentes salvos:", err);
       }
     }
-  }, []); // [] garante que só rode na montagem
+  }, []);
 };

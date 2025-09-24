@@ -33,13 +33,13 @@ export const FooterPronta = () => {
                 storageKey={`footerNavItem-${link.label}`}
                 defaultValue={link}
               >
-                {(navItem, setNavItem) => (
+                {(navItem: { label: string; href: string }, setNavItem) => (
                   <TextBlockHyperLink
                     href={navItem.href}
                     content={navItem.label}
                     isSet={true}
                     draggable
-                    onChange={(label, href) => setNavItem({ label, href })}
+                    onChange={(text: unknown, href: string) => setNavItem({ label: text as string, href })}
                   />
                 )}
               </AutoSaveBlock>
